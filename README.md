@@ -8,21 +8,21 @@ I (well mainly claude) made this after I spent too much time removing coments fr
 
 ### NixOS
 
-#### Add bsfetch as a flake input
+#### Add rmcm as a flake input
 
-In your system flake's `flake.nix`, add bsfetch to `inputs`:
+In your system flake's `flake.nix`, add rmcm to `inputs`:
 
 ```nix
 inputs = {
   nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  bsfetch.url = "github:thecosmomancer/bsfetch";
+  rmcm.url = "github:thecosmomancer/rmcm";
   ...
 };
 ```
 
 #### Import the module in your NixOS configuration
 
-Pass `bsfetch` through to your modules (e.g. via `specialArgs` if using
+Pass `rmcm` through to your modules (e.g. via `specialArgs` if using
 flakes directly, or however your setup threads flake inputs to modules),
 then import it alongside your other modules:
 
@@ -32,7 +32,7 @@ outputs = { self, nixpkgs, ... }@inputs: {
     system = "x86_64-linux";
     modules = [
       ./configuration.nix
-      inputs.bsfetch.nixosModules.default
+      inputs.rmcm.nixosModules.default
       # ...your other modules
     ];
   };
@@ -48,8 +48,8 @@ Add it to your system packages inside ```environment.systemPackages``` or to you
 #### Clone the repo
 
 ```bash
-git clone https://github.com/thecosmomancer/bsfetch.git
-cd bsfetch
+git clone https://github.com/thecosmomancer/rmcm.git
+cd rmcm
 ```
 
 ##### Install python3

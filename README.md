@@ -4,29 +4,81 @@ this is a simple script to remove comments and docstrings from python files.
 
 I (well mainly claude) made this after I spent too much time removing coments from the code I had to turn in for my classes.
 
+## Installation
+
+### NixOS
+
+#### Add bsfetch as a flake input
+
+In your system flake's `flake.nix`, add bsfetch to `inputs`:
+
+```nix
+inputs = {
+  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  bsfetch.url = "github:thecosmomancer/bsfetch";
+  ...
+};
+```
+
+#### Import the module in your NixOS configuration
+
+Pass `bsfetch` through to your modules (e.g. via `specialArgs` if using
+flakes directly, or however your setup threads flake inputs to modules),
+then import it alongside your other modules:
+
+```nix
+outputs = { self, nixpkgs, ... }@inputs: {
+  nixosConfigurations.yourhostname = nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    modules = [
+      ./configuration.nix
+      inputs.bsfetch.nixosModules.default
+      # ...your other modules
+    ];
+  };
+};
+```
+
+#### Add the package in your system configuration
+
+Add it to your system packages inside ```environment.systemPackages``` or to your user packages using [home-manager](https://github.com/nix-community/home-manager) by adding it inside of ```home.packages```.
+
+### Other distros
+
+#### Clone the repo
+
+```bash
+git clone https://github.com/thecosmomancer/bsfetch.git
+cd bsfetch
+```
+
+##### Install python3
+
+##### Run the setup script
+
+```bash
+./setup.sh
+```
+
+##### If the setup script is not executable
+
+```bash
+bash setup.sh
+```
 ## Usage
 
-WARNING: make sure to have a backup in case anything goes wrong. To my knowledge it should only flag docstrings as docstrings but if you have a ''' or """ on its own without a , or [ or ( or { at the end of the last non-whitespace line, it will flag it as a docstring as well however that might happen.
-
-clone the repo:
-
 ```bash
-git clone https://github.com/.thecosmomancer/rmcm.git
+rmcm -i {input_file} -o {output_file}
 ```
 
-run with python:
+or to overwrite the input file:
 
 ```bash
-python rmcm.py -i {input_file} -o {output_file}
+rmcm -Oi {input_file}
 ```
 
-or:
+the `-p` argument can be used to print the output to stdout.
 
-```bash
-python rmcm.py -Oi {input_file}
-```
-
-to overwrite the input file
-# License
+## License
 
 [MIT.](https://choosealicense.com/licenses/mit/) I hate long licensing texts.

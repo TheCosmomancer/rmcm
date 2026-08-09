@@ -1,10 +1,13 @@
+#! /usr/bin/env python3
+
 def remove_comments_and_docstrings(source):
 
     def not_inlist(last_significant_token):
-        if last_significant_token in (',', '[','(','{'):
+
+        if last_significant_token in (',', '[', '(', '{'):
             return False
         return True
-    
+
     import io
     import tokenize
 
@@ -78,14 +81,14 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i','--input',help='path to input file',required=True)
+    parser.add_argument('-i', '--input', help='path to input file', required=True)
     action = parser.add_mutually_exclusive_group()
-    action.add_argument('-o','--output',help='path to output file')
-    action.add_argument('-O','--overwrite',action='store_true',help='overwrite input file')
-    parser.add_argument('-p','--print',action='store_true',help='print output to stdout')
+    action.add_argument('-o', '--output', help='path to output file')
+    action.add_argument('-O', '--overwrite', action='store_true', help='overwrite input file')
+    parser.add_argument('-p', '--print', action='store_true', help='print output to stdout')
     args = parser.parse_args()
 
-    if not args.print and not args.overwrite and args.output == None:
+    if not args.print and not args.overwrite and args.output is None:
         print("Select output format with -p, -O or -o {filepath}")
         exit(1)
 
@@ -108,6 +111,7 @@ def main():
 
     if args.print:
         print(cleaned)
+
 
 if __name__ == "__main__":
     main()
